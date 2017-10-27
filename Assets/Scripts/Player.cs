@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
 
 	private void Start () {
 		controller = GetComponent<Controller2D>();
+		moveInfo.direction = 1;
 	}
 
 	private void Update () {
@@ -26,16 +27,22 @@ public class Player : MonoBehaviour {
 			velocity.y = 0;
 		}
 
-		if (Input.GetKey("right")) {velocity.x = moveSpeed;} else if (Input.GetKey("left")) { velocity.x = -moveSpeed;} else {velocity.x = 0;}
+		if (!controller.collisionInfo.below && jetPackActive == false) { Invoke ("ActivateJetpack",0.4f);}
+	
+		if (Input.GetKey("right")) {velocity.x = moveSpeed; moveInfo.direction = 1;} 
+		else if (Input.GetKey("left")) { velocity.x = -moveSpeed; moveInfo.direction = -1;} 
+		else {velocity.x = 0;}
 			
 		if (controller.collisionInfo.below && Input.GetKeyDown(KeyCode.Space)) {
+			jetPackActive = false;
 			velocity.y = jumpSpeed;
 		}
+
 
 		if (!controller.collisionInfo.below && Input.GetKey(KeyCode.Space) && jetPackActive) {
 			velocity.y = jetPackSpeed;
 			moveInfo.jetpack = true;
-		} else if (!controller.collisionInfo.below && Input.GetKeyUp(KeyCode.Space) && moveInfo.jetpack) {
+		} else if (!controller.collisionInfo.below && Input.GetKeyUp(KeyCode.Space)) {
 			moveInfo.jetpack = false;
 		}
 
@@ -45,13 +52,13 @@ public class Player : MonoBehaviour {
 
 		//Animation states 
 		if (!controller.collisionInfo.below) {
+
 			if (velocity.y > 0) {moveInfo.jump = true;}
 			else if (velocity.y < 0) {moveInfo.fall = true; moveInfo.jump = false;} 
 		}
 
 		if (controller.collisionInfo.below) {
 			moveInfo.fall = false;
-			jetPackActive = false;
 
 			if (velocity.x !=0) { moveInfo.run = true;} 
 			if (velocity.x == 0) { moveInfo.run = false;}

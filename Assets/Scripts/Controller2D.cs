@@ -44,7 +44,7 @@ public class Controller2D : MonoBehaviour {
 			Debug.DrawRay (rayOrigin, Vector2.up * directionY * RayLenght,Color.red);
 
 			if (hit) {
-
+				
 				velocity.y = (hit.distance - rayCastController.skinWidth) * directionY;
 				RayLenght = hit.distance;
 
@@ -86,6 +86,7 @@ public class Controller2D : MonoBehaviour {
 		public void Reset() {
 			above = below = false;
 			left = right = false;
+
 		}
 
 	}
