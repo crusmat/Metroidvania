@@ -53,6 +53,7 @@ public class Player : MonoBehaviour {
 		//Animation states 
 		if (!controller.collisionInfo.below) {
 
+			moveInfo.run = false;
 			if (velocity.y > 0) {moveInfo.jump = true;}
 			else if (velocity.y < 0) {moveInfo.fall = true; moveInfo.jump = false;} 
 		}
